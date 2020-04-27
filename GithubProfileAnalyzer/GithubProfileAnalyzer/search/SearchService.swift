@@ -11,13 +11,26 @@ import Foundation
 class SearchService {
     let session = URLSession.shared
     
+    private func getUrlRequest(_ url: URL) -> URLRequest {
+        let loginData = String(format: "%@:%@", K.Search.username, ProcessInfo.processInfo.environment["access_token"]!)
+        let base64LoginData = loginData.toBase64()
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Basic \(base64LoginData)", forHTTPHeaderField: "Authorization")
+        
+        return request
+    }
+    
     func fetchUsers(username: String, _ callback: @escaping (_ response: SearchResponse) -> Void) {
         let queryItems = [URLQueryItem(name: "q", value: username)]
         var urlComps = URLComponents(string: K.Search.baseUrl)!
         urlComps.queryItems = queryItems
         let url = urlComps.url!
         
-        session.dataTask(with: url, completionHandler: {data, response, error in
+        let request = getUrlRequest(url)
+        
+        session.dataTask(with: request, completionHandler: {data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 // TODO: handle error
                 return
@@ -37,8 +50,9 @@ class SearchService {
     
     func fetchUserDetails(detailsUrl: String, _ callback: @escaping (_ response: UserDetails) -> Void) {
         let url = URL(string: detailsUrl)!
+        let request = getUrlRequest(url)
         
-        session.dataTask(with: url, completionHandler: {data, response, error in
+        session.dataTask(with: request, completionHandler: {data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 // TODO: handle error
                 print((response as! HTTPURLResponse).statusCode)
@@ -54,6 +68,22 @@ class SearchService {
             }
         }).resume()
     }
+}
+
+extension String {
+
+    func fromBase64() -> String? {
+        guard let data = Data(base64Encoded: self) else {
+            return nil
+        }
+
+        return String(data: data, encoding: .utf8)
+    }
+
+    func toBase64() -> String {
+        return Data(self.utf8).base64EncodedString()
+    }
+
 }
 
 

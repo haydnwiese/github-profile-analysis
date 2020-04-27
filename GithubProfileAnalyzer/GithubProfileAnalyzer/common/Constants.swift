@@ -13,5 +13,6 @@ struct K {
     struct Search {
         static let tableViewRowHeight: CGFloat = 95.0
         static let baseUrl = "https://api.github.com/search/users"
+        static let username = "haydnwiese"
     }
 }
