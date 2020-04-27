@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA2FD31324573696009E00BC /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FD31224573696009E00BC /* UserDetails.swift */; };
 		AA31191C245691FA0056E179 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA31191B245691FA0056E179 /* SearchTableViewCell.swift */; };
 		AA3119202456A1750056E179 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA31191F2456A1750056E179 /* Constants.swift */; };
 		AA91891C2456349300D0BACB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91891B2456349300D0BACB /* AppDelegate.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA2FD31224573696009E00BC /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		AA31191B245691FA0056E179 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		AA31191F2456A1750056E179 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		AA9189182456349300D0BACB /* GithubProfileAnalyzer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubProfileAnalyzer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +104,7 @@
 			children = (
 				AA918933245646CF00D0BACB /* SearchResult.swift */,
 				AA91893C2456811F00D0BACB /* SearchResponse.swift */,
+				AA2FD31224573696009E00BC /* UserDetails.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 			files = (
 				AA9189202456349300D0BACB /* SearchViewController.swift in Sources */,
 				AA91891C2456349300D0BACB /* AppDelegate.swift in Sources */,
+				AA2FD31324573696009E00BC /* UserDetails.swift in Sources */,
 				AA91893D2456811F00D0BACB /* SearchResponse.swift in Sources */,
 				AA91893B24567D3A00D0BACB /* SearchService.swift in Sources */,
 				AA918934245646CF00D0BACB /* SearchResult.swift in Sources */,
@@ -331,6 +335,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X662XNZL9X;
 				INFOPLIST_FILE = GithubProfileAnalyzer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -349,6 +354,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X662XNZL9X;
 				INFOPLIST_FILE = GithubProfileAnalyzer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

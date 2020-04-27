@@ -10,7 +10,7 @@ import UIKit
 
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
-    var searchResults = [SearchResult]()
+    var searchResults = [(SearchResult, UserDetails)]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +20,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         print("View started")
         fetchUsers()
+        fetchUserDetails()
     }
     
     // MARK: Private Methods
@@ -30,6 +31,13 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
+        }
+    }
+    
+    private func fetchUserDetails() {
+        let searchService = SearchService()
+        searchService.fetchUserDetails(detailsUrl: "https://api.github.com/users/haydnwiese") { response in
+            print(response)
         }
     }
     

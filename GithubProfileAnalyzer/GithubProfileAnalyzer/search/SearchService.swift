@@ -35,7 +35,26 @@ class SearchService {
         }).resume()
     }
     
-    func fetchUserDetails() {
+    func fetchUserDetails(detailsUrl: String, _ callback: @escaping (_ response: UserDetails) -> Void) {
+        let url = URL(string: detailsUrl)!
         
+        session.dataTask(with: url, completionHandler: {data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                // TODO: handle error
+                return
+            }
+            
+            guard let mime = response?.mimeType, mime == "application/json" else {
+                return
+            }
+            
+            if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+                if let details = UserDetails(json) {
+                    callback(details)
+                }
+            }
+        }).resume()
     }
 }
+
+
