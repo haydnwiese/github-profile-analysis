@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA31191C245691FA0056E179 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA31191B245691FA0056E179 /* SearchTableViewCell.swift */; };
+		AA3119202456A1750056E179 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA31191F2456A1750056E179 /* Constants.swift */; };
 		AA91891C2456349300D0BACB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91891B2456349300D0BACB /* AppDelegate.swift */; };
 		AA91891E2456349300D0BACB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91891D2456349300D0BACB /* SceneDelegate.swift */; };
 		AA9189202456349300D0BACB /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91891F2456349300D0BACB /* SearchViewController.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		AA31191B245691FA0056E179 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		AA31191F2456A1750056E179 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		AA9189182456349300D0BACB /* GithubProfileAnalyzer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubProfileAnalyzer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA91891B2456349300D0BACB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA91891D2456349300D0BACB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +47,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA31191E2456A15D0056E179 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				AA31191F2456A1750056E179 /* Constants.swift */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
 		AA91890F2456349300D0BACB = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +74,7 @@
 		AA91891A2456349300D0BACB /* GithubProfileAnalyzer */ = {
 			isa = PBXGroup;
 			children = (
+				AA31191E2456A15D0056E179 /* common */,
 				AA9189312456467E00D0BACB /* search */,
 				AA91891B2456349300D0BACB /* AppDelegate.swift */,
 				AA91891D2456349300D0BACB /* SceneDelegate.swift */,
@@ -173,6 +184,7 @@
 				AA918934245646CF00D0BACB /* SearchResult.swift in Sources */,
 				AA31191C245691FA0056E179 /* SearchTableViewCell.swift in Sources */,
 				AA91891E2456349300D0BACB /* SceneDelegate.swift in Sources */,
+				AA3119202456A1750056E179 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

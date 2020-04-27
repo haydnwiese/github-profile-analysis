@@ -10,11 +10,10 @@ import Foundation
 
 class SearchService {
     let session = URLSession.shared
-    let baseUrl = "https://api.github.com/search/users"
     
     func fetchUsers(username: String, callback: @escaping (_ response: SearchResponse) -> Void) {
         let queryItems = [URLQueryItem(name: "q", value: username)]
-        var urlComps = URLComponents(string: baseUrl)!
+        var urlComps = URLComponents(string: K.Search.baseUrl)!
         urlComps.queryItems = queryItems
         let url = urlComps.url!
         
