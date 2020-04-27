@@ -8,13 +8,16 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
-    let session = URLSession.shared
-    var url = URL(string: "https://api.github.com/search/users?q=haydn")!
-
+class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet weak var tableView: UITableView!
+    var searchResults = [SearchResult]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
         print("View started")
         fetchUsers()
     }
@@ -23,8 +26,35 @@ class SearchViewController: UIViewController {
     private func fetchUsers() {
         let searchService = SearchService()
         searchService.fetchUsers(username: "haydn", callback: { response in
-            print(response.items[0])
+            self.searchResults += response.items
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         })
+    }
+    
+    // MARK: UITableViewDelegate Methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchResults.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchTableViewCell", for: indexPath) as? SearchTableViewCell else {
+            fatalError("The dequeued cell is not an instance of MealTableViewCell")
+        }
+        
+        let result = searchResults[indexPath.row]
+        cell.usernameLabel.text = result.login
+        
+        return cell
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90.0
     }
 }
 
