@@ -9,19 +9,22 @@
 import Foundation
 
 struct UserDetails {
-    let name: String
-    let bio: String
+    let name: String?
+    let bio: String?
 }
 
 extension UserDetails {
-    init?(_ json: [String: Any]) {
-        guard let name = json["name"] as? String,
-            let bio = json["bio"] as? String
-        else {
-            print("UserDetails init failed")
-            return nil
+    init(_ json: [String: Any]) {
+        if let name = json["name"] as? String {
+            self.name = name
+        } else {
+            self.name = nil
         }
-        self.name = name
-        self.bio = bio
+        
+        if let bio = json["bio"] as? String {
+            self.bio = bio
+        } else {
+            self.bio = nil
+        }
     }
 }

@@ -41,6 +41,7 @@ class SearchService {
         session.dataTask(with: url, completionHandler: {data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 // TODO: handle error
+                print((response as! HTTPURLResponse).statusCode)
                 return
             }
             
@@ -49,9 +50,7 @@ class SearchService {
             }
             
             if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
-                if let details = UserDetails(json) {
-                    callback(details)
-                }
+                callback(UserDetails(json))
             }
         }).resume()
     }
