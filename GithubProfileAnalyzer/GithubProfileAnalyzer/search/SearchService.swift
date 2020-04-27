@@ -11,7 +11,7 @@ import Foundation
 class SearchService {
     let session = URLSession.shared
     
-    func fetchUsers(username: String, callback: @escaping (_ response: SearchResponse) -> Void) {
+    func fetchUsers(username: String, _ callback: @escaping (_ response: SearchResponse) -> Void) {
         let queryItems = [URLQueryItem(name: "q", value: username)]
         var urlComps = URLComponents(string: K.Search.baseUrl)!
         urlComps.queryItems = queryItems

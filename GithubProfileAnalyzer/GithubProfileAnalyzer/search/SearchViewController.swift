@@ -25,12 +25,12 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: Private Methods
     private func fetchUsers() {
         let searchService = SearchService()
-        searchService.fetchUsers(username: "haydn", callback: { response in
+        searchService.fetchUsers(username: "haydn") { response in
             self.searchResults += response.items
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        })
+        }
     }
     
     // MARK: UITableViewDelegate Methods
@@ -45,6 +45,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let result = searchResults[indexPath.row]
         cell.usernameLabel.text = result.login
+        cell.profilePictureImageView.load(url: URL(string: result.avatarUrl)!)
         
         return cell
     }
@@ -58,3 +59,17 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
 }
 
+extension UIImageView {
+    func load(url: URL) {
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
+            
+        }
+    }
+}
