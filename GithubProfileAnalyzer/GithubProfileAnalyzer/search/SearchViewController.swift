@@ -11,6 +11,7 @@ import UIKit
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     var combinedResults = [(SearchResult, UserDetails?)]()
+    let MAX_RESULTS: Int = 10
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +21,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         print("View started")
         fetchUsers()
-        fetchUserDetails()
     }
     
     // MARK: Private Methods
@@ -30,21 +30,23 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             for item in response.items {
                 self.combinedResults.append((item, nil))
             }
-            self.fetchUserDetails()
+            let newArraySize = min(self.MAX_RESULTS, self.combinedResults.count + 1)
+            self.combinedResults = Array(self.combinedResults[0..<newArraySize])
+            self.fetchUserDetails(SearchService())
         }
     }
     
-    private func fetchUserDetails() {
-        let searchService = SearchService()
-        for (index, item) in combinedResults.enumerated() {
-            searchService.fetchUserDetails(detailsUrl: item.0.detailsUrl) { response in
-                self.combinedResults[index].1 = response
-                if index == self.combinedResults.count - 1 {
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                }
+    private func fetchUserDetails(index: Int = 0,_ searchService: SearchService) {
+        if index >= combinedResults.count {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
+            return
+        }
+        let url = combinedResults[index].0.detailsUrl
+        searchService.fetchUserDetails(detailsUrl: url) { response in
+            self.combinedResults[index].1 = response
+            self.fetchUserDetails(index: index + 1, searchService)
         }
     }
     
