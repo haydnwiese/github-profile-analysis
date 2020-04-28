@@ -10,7 +10,8 @@ import UIKit
 
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
-    var searchResults = [SearchResult]()
+    var combinedResults = [(SearchResult, UserDetails?)]()
+    let MAX_RESULTS: Int = 10
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,30 +21,38 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         print("View started")
         fetchUsers()
-        fetchUserDetails()
     }
     
     // MARK: Private Methods
     private func fetchUsers() {
         let searchService = SearchService()
         searchService.fetchUsers(username: "haydn") { response in
-            self.searchResults += response.items
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            for item in response.items {
+                self.combinedResults.append((item, nil))
             }
+            let newArraySize = min(self.MAX_RESULTS, self.combinedResults.count + 1)
+            self.combinedResults = Array(self.combinedResults[0..<newArraySize])
+            self.fetchUserDetails(SearchService())
         }
     }
     
-    private func fetchUserDetails() {
-        let searchService = SearchService()
-        searchService.fetchUserDetails(detailsUrl: "https://api.github.com/users/haydnwiese") { response in
-            print(response)
+    private func fetchUserDetails(index: Int = 0,_ searchService: SearchService) {
+        if index >= combinedResults.count {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            return
+        }
+        let url = combinedResults[index].0.detailsUrl
+        searchService.fetchUserDetails(detailsUrl: url) { response in
+            self.combinedResults[index].1 = response
+            self.fetchUserDetails(index: index + 1, searchService)
         }
     }
     
     // MARK: UITableViewDelegate Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+        return combinedResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -51,9 +60,16 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             fatalError("The dequeued cell is not an instance of MealTableViewCell")
         }
         
-        let result = searchResults[indexPath.row]
-        cell.usernameLabel.text = result.login
-        cell.profilePictureImageView.load(url: URL(string: result.avatarUrl)!)
+        let result = combinedResults[indexPath.row]
+        cell.usernameLabel.text = result.0.login
+        cell.profilePictureImageView.load(url: URL(string: result.0.avatarUrl)!)
+        
+        if let bio = result.1?.bio {
+            cell.descriptionLabel.text = bio
+        }
+        if let name = result.1?.name {
+            cell.nameLabel.text = name
+        }
         
         return cell
     }
