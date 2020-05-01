@@ -13,6 +13,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var searchBar: UISearchBar!
     var combinedResults = [(SearchResult, UserDetails?)]()
     let MAX_RESULTS: Int = 10
+    var indicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +29,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         // Ensures empty cells are not shown
         tableView.tableFooterView = UIView()
+        
         print("View started")
     }
     
@@ -40,6 +42,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let indexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPath, animated: false)
         }
+        
+        setupActivityIndicator()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,6 +54,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: Private Methods
     private func fetchUsers(username: String) {
+        indicator.startAnimating()
+        
         let searchService = SearchService()
         searchService.fetchUsers(username: username) { response in
             for item in response.items {
@@ -64,6 +70,10 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private func fetchUserDetails(index: Int = 0,_ searchService: SearchService) {
         if index >= combinedResults.count {
             DispatchQueue.main.async {
+                // Stop activity indicator
+                self.indicator.stopAnimating()
+                self.indicator.hidesWhenStopped = true
+                
                 self.tableView.reloadData()
             }
             return
@@ -73,6 +83,13 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.combinedResults[index].1 = response
             self.fetchUserDetails(index: index + 1, searchService)
         }
+    }
+    
+    private func setupActivityIndicator() {
+        indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        indicator.style = .medium
+        indicator.center = view.center
+        view.addSubview(indicator)
     }
     
     // MARK: UITableViewDelegate Methods
