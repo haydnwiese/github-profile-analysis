@@ -21,6 +21,9 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         searchBar.delegate = self
         
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        view.addGestureRecognizer(tap)
+        
         print("View started")
     }
     
@@ -82,10 +85,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Hide the keyboard
         searchBar.resignFirstResponder()
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        if let searchTerm = searchBar.text {
+        
+        if let searchTerm = searchBar.text, searchTerm != "" {
             // Clear current results when new search is made
             combinedResults.removeAll()
             DispatchQueue.main.async {
