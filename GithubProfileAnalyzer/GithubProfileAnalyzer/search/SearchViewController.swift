@@ -8,8 +8,9 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     var combinedResults = [(SearchResult, UserDetails?)]()
     let MAX_RESULTS: Int = 10
     
@@ -18,20 +19,20 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         tableView.delegate = self
         tableView.dataSource = self
+        searchBar.delegate = self
         
         print("View started")
-        fetchUsers()
     }
     
     // MARK: Private Methods
-    private func fetchUsers() {
+    private func fetchUsers(username: String) {
         let searchService = SearchService()
-        searchService.fetchUsers(username: "haydn") { response in
+        searchService.fetchUsers(username: username) { response in
             for item in response.items {
                 self.combinedResults.append((item, nil))
             }
             let newArraySize = min(self.MAX_RESULTS, self.combinedResults.count + 1)
-            self.combinedResults = Array(self.combinedResults[0..<newArraySize])
+            self.combinedResults = Array(self.combinedResults[0..<newArraySize - 1])
             self.fetchUserDetails(SearchService())
         }
     }
@@ -63,13 +64,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let result = combinedResults[indexPath.row]
         cell.usernameLabel.text = result.0.login
         cell.profilePictureImageView.load(url: URL(string: result.0.avatarUrl)!)
-        
-        if let bio = result.1?.bio {
-            cell.descriptionLabel.text = bio
-        }
-        if let name = result.1?.name {
-            cell.nameLabel.text = name
-        }
+        cell.descriptionLabel.text = result.1?.bio
+        cell.nameLabel.text = result.1?.name
         
         return cell
     }
@@ -80,6 +76,23 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return K.Search.tableViewRowHeight
+    }
+    
+    // MARK: UISearchBarDelegate Methods
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Hide the keyboard
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if let searchTerm = searchBar.text {
+            // Clear current results when new search is made
+            combinedResults.removeAll()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            fetchUsers(username: searchTerm)
+        }
     }
 }
 
