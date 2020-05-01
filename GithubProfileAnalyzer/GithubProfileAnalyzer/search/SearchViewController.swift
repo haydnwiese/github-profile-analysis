@@ -23,6 +23,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         // Add recognizer to dismiss keyboard when screen is tapped anywhere
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
         // Ensures empty cells are not shown
