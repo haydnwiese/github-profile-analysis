@@ -21,10 +21,30 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         searchBar.delegate = self
         
+        // Add recognizer to dismiss keyboard when screen is tapped anywhere
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         view.addGestureRecognizer(tap)
         
+        // Ensures empty cells are not shown
+        tableView.tableFooterView = UIView()
         print("View started")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar on this screen
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        
+        // Ensure row is deselected on return to search screen
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Ensure the navigation bar is shown on the details screen
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     // MARK: Private Methods
