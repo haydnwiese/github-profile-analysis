@@ -142,9 +142,9 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             fatalError("Unexpected destination")
         }
         
-//        guard let selectedSearchCell = sender as? SearchTableViewCell else {
-//            fatalError("Unexpected sender")
-//        }
+        guard let selectedSearchCell = sender as? SearchTableViewCell else {
+            fatalError("Unexpected sender")
+        }
         
         guard let indexPath = tableView.indexPathForSelectedRow else {
             fatalError()
@@ -152,6 +152,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let selectedResult = combinedResults[indexPath.row]
         detailsViewController.userDetails = selectedResult as? (SearchResult, UserDetails)
+        detailsViewController.profilePicture = selectedSearchCell.profilePictureImageView.image
     }
 }
 

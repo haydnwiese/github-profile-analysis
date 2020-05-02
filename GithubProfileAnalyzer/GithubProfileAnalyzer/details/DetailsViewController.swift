@@ -9,25 +9,29 @@
 import UIKit
 
 class DetailsViewController: UIViewController {
+    @IBOutlet weak var profilePictureImageView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var organizationLabel: UILabel!
+    @IBOutlet weak var repoCountLabel: UILabel!
+    
     var userDetails: (SearchResult, UserDetails)?
-
+    var profilePicture: UIImage?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let user = userDetails?.0 {
-            navigationItem.title = user.login
-        }
+        updateUserDetails()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    // MARK: Private Methods
+    private func updateUserDetails() {
+        // Update screen title with username
+        navigationItem.title = userDetails?.0.login
+        
+        profilePictureImageView.image = profilePicture
+        if let details = userDetails?.1 {
+            nameLabel.text = details.name
+            organizationLabel.text = details.company
+        }
     }
-    */
-
 }
