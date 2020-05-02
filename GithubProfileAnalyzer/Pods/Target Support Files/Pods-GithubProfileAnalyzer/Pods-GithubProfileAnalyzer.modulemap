@@ -1,0 +1,6 @@
+framework module Pods_GithubProfileAnalyzer {
+  umbrella header "Pods-GithubProfileAnalyzer-umbrella.h"
+
+  export *
+  module * { export * }
+}
