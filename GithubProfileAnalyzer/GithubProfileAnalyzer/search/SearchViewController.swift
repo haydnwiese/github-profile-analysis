@@ -133,6 +133,26 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             fetchUsers(username: searchTerm)
         }
     }
+    
+    // MARK: Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        guard let detailsViewController = segue.destination as? DetailsViewController else {
+            fatalError("Unexpected destination")
+        }
+        
+//        guard let selectedSearchCell = sender as? SearchTableViewCell else {
+//            fatalError("Unexpected sender")
+//        }
+        
+        guard let indexPath = tableView.indexPathForSelectedRow else {
+            fatalError()
+        }
+        
+        let selectedResult = combinedResults[indexPath.row]
+        detailsViewController.userDetails = selectedResult as? (SearchResult, UserDetails)
+    }
 }
 
 extension UIImageView {

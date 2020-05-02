@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA2D37E8245D176A0009FC45 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2D37E7245D176A0009FC45 /* DetailsViewController.swift */; };
 		AA2FD31324573696009E00BC /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FD31224573696009E00BC /* UserDetails.swift */; };
 		AA31191C245691FA0056E179 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA31191B245691FA0056E179 /* SearchTableViewCell.swift */; };
 		AA3119202456A1750056E179 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA31191F2456A1750056E179 /* Constants.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA2D37E7245D176A0009FC45 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		AA2FD31224573696009E00BC /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		AA31191B245691FA0056E179 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		AA31191F2456A1750056E179 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -49,6 +51,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA2D37E6245D173E0009FC45 /* details */ = {
+			isa = PBXGroup;
+			children = (
+				AA2D37E7245D176A0009FC45 /* DetailsViewController.swift */,
+			);
+			path = details;
+			sourceTree = "<group>";
+		};
 		AA31191E2456A15D0056E179 /* common */ = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +86,7 @@
 		AA91891A2456349300D0BACB /* GithubProfileAnalyzer */ = {
 			isa = PBXGroup;
 			children = (
+				AA2D37E6245D173E0009FC45 /* details */,
 				AA31191E2456A15D0056E179 /* common */,
 				AA9189312456467E00D0BACB /* search */,
 				AA91891B2456349300D0BACB /* AppDelegate.swift */,
@@ -189,6 +200,7 @@
 				AA31191C245691FA0056E179 /* SearchTableViewCell.swift in Sources */,
 				AA91891E2456349300D0BACB /* SceneDelegate.swift in Sources */,
 				AA3119202456A1750056E179 /* Constants.swift in Sources */,
+				AA2D37E8245D176A0009FC45 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

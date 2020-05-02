@@ -103,10 +103,10 @@
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="137.94642857142856"/>
         </scene>
-        <!--View Controller-->
+        <!--Details View Controller-->
         <scene sceneID="eLM-qm-tZb">
             <objects>
-                <viewController id="xph-NA-TqN" sceneMemberID="viewController">
+                <viewController id="xph-NA-TqN" customClass="DetailsViewController" customModule="GithubProfileAnalyzer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mNJ-a2-aMk">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
