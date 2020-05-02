@@ -9,18 +9,7 @@
 import Foundation
 
 class SearchService {
-    let session = URLSession.shared
-    
-    private func getUrlRequest(_ url: URL) -> URLRequest {
-        let loginData = String(format: "%@:%@", K.Search.username, ProcessInfo.processInfo.environment["access_token"]!)
-        let base64LoginData = loginData.toBase64()
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("Basic \(base64LoginData)", forHTTPHeaderField: "Authorization")
-        
-        return request
-    }
+    private let session = URLSession.shared
     
     func fetchUsers(username: String, _ callback: @escaping (_ response: SearchResponse) -> Void) {
         let queryItems = [URLQueryItem(name: "q", value: username)]
@@ -28,7 +17,7 @@ class SearchService {
         urlComps.queryItems = queryItems
         let url = urlComps.url!
         
-        let request = getUrlRequest(url)
+        let request = ServiceHelper.getUrlRequest(url)
         
         session.dataTask(with: request, completionHandler: {data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
@@ -50,7 +39,7 @@ class SearchService {
     
     func fetchUserDetails(detailsUrl: String, _ callback: @escaping (_ response: UserDetails) -> Void) {
         let url = URL(string: detailsUrl)!
-        let request = getUrlRequest(url)
+        let request = ServiceHelper.getUrlRequest(url)
         
         session.dataTask(with: request, completionHandler: {data, response, error in
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {

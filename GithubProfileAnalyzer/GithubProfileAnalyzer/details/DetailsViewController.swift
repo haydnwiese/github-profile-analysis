@@ -16,11 +16,13 @@ class DetailsViewController: UIViewController {
     
     var userDetails: (SearchResult, UserDetails)?
     var profilePicture: UIImage?
+    var repos = [RepoDetails]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         updateUserDetails()
+        fetchRepos()
     }
     
     // MARK: Private Methods
@@ -32,6 +34,15 @@ class DetailsViewController: UIViewController {
         if let details = userDetails?.1 {
             nameLabel.text = details.name
             organizationLabel.text = details.company
+        }
+    }
+    
+    private func fetchRepos() {
+        let detailsService = DetailsService()
+        if let reposUrl = userDetails?.0.reposUrl {
+            detailsService.fetchRepos(reposUrl: reposUrl) { response in
+                self.repos += response
+            }
         }
     }
 }
