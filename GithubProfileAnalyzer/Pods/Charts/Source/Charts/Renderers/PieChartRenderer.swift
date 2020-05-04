@@ -11,6 +11,7 @@
 
 import Foundation
 import CoreGraphics
+import os.log
 
 #if canImport(UIKit)
     import UIKit
@@ -373,6 +374,12 @@ open class PieChartRenderer: DataRenderer
                 let sliceAngle = drawAngles[xIndex]
                 let sliceSpace = getSliceSpace(dataSet: dataSet)
                 let sliceSpaceMiddleAngle = sliceSpace / labelRadius.DEG2RAD
+                
+                if sliceAngle < 10.0
+                {
+                    xIndex += 1
+                    continue
+                }
 
                 // offset needed to center the drawn text in the slice
                 let angleOffset = (sliceAngle - sliceSpaceMiddleAngle / 2.0) / 2.0

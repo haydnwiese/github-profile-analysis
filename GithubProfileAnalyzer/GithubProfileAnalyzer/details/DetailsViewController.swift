@@ -9,7 +9,7 @@
 import UIKit
 import Charts
 
-class DetailsViewController: UIViewController {
+class DetailsViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var organizationLabel: UILabel!
@@ -26,8 +26,9 @@ class DetailsViewController: UIViewController {
         updateUserDetails()
         fetchRepos()
         
-        let players = ["Ozil", "Ramsey", "Laca", "Auba", "Xhaka", "Torreira"]
-        let goals = [6, 2, 26, 30, 8, 10]
+        let players = ["Ozil", "Ramsey", "Haydn", "John", "Sierra", "Laca", "Auba", "Xhaka", "Torreira"]
+        let goals = [6, 1, 1, 1, 1, 26, 30, 8, 10]
+        repoLanguageChartView.delegate = self
         createRepoLanguageChart(dataPoints: players, values: goals.map{ Double($0) })
     }
     
@@ -67,12 +68,20 @@ class DetailsViewController: UIViewController {
         format.numberStyle = .none
         let formatter = DefaultValueFormatter(formatter: format)
         pieChartData.setValueFormatter(formatter)
+        pieChartData.setDrawValues(false)
         
-        repoLanguageChartView.legend.enabled = false
+        repoLanguageChartView.legend.enabled = true
+        let marker:BalloonMarker = BalloonMarker(color: UIColor(red: 93/255, green: 186/255, blue: 215/255, alpha: 1), font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 25.0, right: 7.0))
+        marker.minimumSize = CGSize(width: 75.0, height: 35.0)
+        repoLanguageChartView.marker = marker
+        repoLanguageChartView.rotationEnabled = false
+        repoLanguageChartView.drawEntryLabelsEnabled = false
         repoLanguageChartView.holeColor = nil
+        repoLanguageChartView.drawHoleEnabled = true
         repoLanguageChartView.data = pieChartData
     }
     
+    // TODO: Update to have set color for each language
     private func colorsOfCharts(numbersOfColor: Int) -> [UIColor] {
       var colors: [UIColor] = []
       for _ in 0..<numbersOfColor {
