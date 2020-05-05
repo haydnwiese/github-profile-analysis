@@ -15,6 +15,8 @@ class DetailsViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var organizationLabel: UILabel!
     @IBOutlet weak var repoCountLabel: UILabel!
     @IBOutlet weak var repoLanguageChartView: PieChartView!
+    @IBOutlet weak var commitLanguageChartView: PieChartView!
+    @IBOutlet weak var commitsRepoChartView: PieChartView!
     
     var userDetails: (SearchResult, UserDetails)?
     var profilePicture: UIImage?
@@ -79,6 +81,12 @@ class DetailsViewController: UIViewController, ChartViewDelegate {
         repoLanguageChartView.holeColor = nil
         repoLanguageChartView.drawHoleEnabled = true
         repoLanguageChartView.data = pieChartData
+        
+        commitLanguageChartView.holeColor = nil
+        commitLanguageChartView.data = pieChartData
+        
+        commitsRepoChartView.holeColor = nil
+        commitsRepoChartView.data = pieChartData
     }
     
     // TODO: Update to have set color for each language
