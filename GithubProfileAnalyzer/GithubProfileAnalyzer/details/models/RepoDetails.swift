@@ -12,11 +12,14 @@ struct RepoDetails {
     let name: String
     let isFork: Bool
     let commitsUrl: String
-    let language: String?
+    let language: Language?
 }
 
-enum Language {
-    case Java, Python, Swift
+enum Language: String, CaseIterable {
+    case java = "Java"
+    case python = "Python"
+    case swift = "Swift"
+    case javascript = "JavaScript"
 }
 
 extension RepoDetails {
@@ -34,6 +37,11 @@ extension RepoDetails {
         self.name = name
         self.isFork = isFork
         self.commitsUrl = commitsUrl
-        self.language = json["language"] as? String
+        
+        if let language = json["language"] as? String {
+            self.language = Language(rawValue: language)
+        } else {
+            self.language = nil
+        }
     }
 }
