@@ -9,7 +9,7 @@
 import UIKit
 import Charts
 
-class DetailsViewController: UIViewController, ChartViewDelegate {
+class DetailsViewController: UIViewController {
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var organizationLabel: UILabel!
@@ -30,8 +30,6 @@ class DetailsViewController: UIViewController, ChartViewDelegate {
         
         let players = ["Ozil", "Ramsey", "Haydn", "John", "Sierra", "Laca", "Auba", "Xhaka", "Torreira"]
         let goals = [6, 1, 1, 1, 1, 26, 30, 8, 10]
-        repoLanguageChartView.delegate = self
-        createRepoLanguageChart(dataPoints: players, values: goals.map{ Double($0) })
     }
     
     // MARK: Private Methods
@@ -51,11 +49,35 @@ class DetailsViewController: UIViewController, ChartViewDelegate {
         if let reposUrl = userDetails?.0.reposUrl {
             detailsService.fetchRepos(reposUrl: reposUrl) { response in
                 self.repos += response
+                DispatchQueue.main.async {
+                    self.repoCountLabel.text = "\(response.count) public repos"
+                    self.parseRepoLanguageData()
+                }
             }
         }
     }
     
-    private func createRepoLanguageChart(dataPoints: [String], values: [Double]) {
+    private func parseRepoLanguageData() {
+        var languageAmount = [Language: Int]()
+
+        for repo in repos {
+            if let lang = repo.language {
+                if languageAmount[lang] != nil {
+                    // Increment amount for language if it's already in dict
+                    languageAmount[lang]! += 1
+                } else {
+                    // Add language to dict with value of 1
+                    languageAmount[lang] = 1
+                }
+            }
+        }
+
+        let vals = Array(languageAmount.values).map { Double($0) }
+        let labels = Array(languageAmount.keys).map { $0.rawValue }
+        generateChartView(chartView: repoLanguageChartView, dataPoints: labels, values: vals)
+    }
+    
+    private func generateChartView(chartView: PieChartView, dataPoints: [String], values: [Double]) {
         var dataEntries = [ChartDataEntry]()
         for (i,label) in dataPoints.enumerated() {
             let dataEntry = PieChartDataEntry(value: values[i], label: label, data: label as AnyObject)
@@ -64,7 +86,7 @@ class DetailsViewController: UIViewController, ChartViewDelegate {
         
         let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
         pieChartDataSet.colors = colorsOfCharts(numbersOfColor: dataPoints.count)
-
+        
         let pieChartData = PieChartData(dataSet: pieChartDataSet)
         let format = NumberFormatter()
         format.numberStyle = .none
@@ -72,21 +94,16 @@ class DetailsViewController: UIViewController, ChartViewDelegate {
         pieChartData.setValueFormatter(formatter)
         pieChartData.setDrawValues(false)
         
-        repoLanguageChartView.legend.enabled = true
+        chartView.legend.enabled = true
         let marker:BalloonMarker = BalloonMarker(color: UIColor(red: 93/255, green: 186/255, blue: 215/255, alpha: 1), font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 25.0, right: 7.0))
         marker.minimumSize = CGSize(width: 75.0, height: 35.0)
-        repoLanguageChartView.marker = marker
-        repoLanguageChartView.rotationEnabled = false
-        repoLanguageChartView.drawEntryLabelsEnabled = false
-        repoLanguageChartView.holeColor = nil
-        repoLanguageChartView.drawHoleEnabled = true
-        repoLanguageChartView.data = pieChartData
+        chartView.marker = marker
+        chartView.rotationEnabled = false
+        chartView.drawEntryLabelsEnabled = false
+        chartView.holeColor = nil
+        chartView.drawHoleEnabled = true
         
-        commitLanguageChartView.holeColor = nil
-        commitLanguageChartView.data = pieChartData
-        
-        commitsRepoChartView.holeColor = nil
-        commitsRepoChartView.data = pieChartData
+        chartView.data = pieChartData
     }
     
     // TODO: Update to have set color for each language
