@@ -15,4 +15,7 @@ struct K {
         static let baseUrl = "https://api.github.com/search/users"
         static let username = "haydnwiese"
     }
+    struct Details {
+        static let contributionsUrl = "https://api.github.com/repos/%@/%@/contributors"
+    }
 }

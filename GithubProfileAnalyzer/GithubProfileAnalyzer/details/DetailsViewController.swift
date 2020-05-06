@@ -20,16 +20,14 @@ class DetailsViewController: UIViewController {
     
     var userDetails: (SearchResult, UserDetails)?
     var profilePicture: UIImage?
-    var repos = [RepoDetails]()
+    var repos = [(RepoDetails, Int?)]()
+    let detailsService = DetailsService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         updateUserDetails()
         fetchRepos()
-        
-        let players = ["Ozil", "Ramsey", "Haydn", "John", "Sierra", "Laca", "Auba", "Xhaka", "Torreira"]
-        let goals = [6, 1, 1, 1, 1, 26, 30, 8, 10]
     }
     
     // MARK: Private Methods
@@ -45,23 +43,61 @@ class DetailsViewController: UIViewController {
     }
     
     private func fetchRepos() {
-        let detailsService = DetailsService()
         if let reposUrl = userDetails?.0.reposUrl {
             detailsService.fetchRepos(reposUrl: reposUrl) { response in
-                self.repos += response
+                for repo in response {
+                    self.repos.append((repo, nil))
+                }
                 DispatchQueue.main.async {
                     self.repoCountLabel.text = "\(response.count) public repos"
-                    self.parseRepoLanguageData()
+                    self.generateRepoLanguageChart()
+                    self.fetchCommits()
                 }
             }
         }
     }
     
-    private func parseRepoLanguageData() {
+    private func fetchCommits(index: Int = 0) {
+        if index >= repos.count {
+            DispatchQueue.main.async {
+                self.generateCommitsPerRepoChart()
+            }
+            return
+        }
+        
+        if repos[index].0.isFork {
+            fetchCommits(index: index + 1)
+        } else {
+            detailsService.fetchNumberOfCommits(username: userDetails!.0.login, repoName: repos[index].0.name) { response in
+                self.repos[index].1 = response
+                self.fetchCommits(index: index + 1)
+            }
+        }
+    }
+    
+    private func generateCommitsPerRepoChart() {
+        var commitsPerRepo = [String: Int]()
+        
+        for repo in repos {
+            if let commitsNum = repo.1, !repo.0.isFork {
+                commitsPerRepo[repo.0.name] = commitsNum
+            }
+        }
+        
+        let vals = Array(commitsPerRepo.values).map { Double($0) }
+        let labels = Array(commitsPerRepo.keys)
+        generateChartView(chartView: commitsRepoChartView, dataPoints: labels, values: vals)
+    }
+    
+    private func generateCommitsPerLanguageChart() {
+        
+    }
+    
+    private func generateRepoLanguageChart() {
         var languageAmount = [Language: Int]()
 
         for repo in repos {
-            if let lang = repo.language {
+            if let lang = repo.0.language {
                 if languageAmount[lang] != nil {
                     // Increment amount for language if it's already in dict
                     languageAmount[lang]! += 1
