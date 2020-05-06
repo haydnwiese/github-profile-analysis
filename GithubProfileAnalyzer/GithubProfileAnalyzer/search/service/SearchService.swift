@@ -9,7 +9,6 @@
 import Foundation
 
 class SearchService {
-    private let session = URLSession.shared
     
     func fetchUsers(username: String, _ callback: @escaping (_ response: SearchResponse) -> Void) {
         let queryItems = [URLQueryItem(name: "q", value: username)]
@@ -19,43 +18,22 @@ class SearchService {
         
         let request = ServiceHelper.getUrlRequest(url)
         
-        session.dataTask(with: request, completionHandler: {data, response, error in
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                // TODO: handle error
-                return
+        ServiceHelper.performGetRequest(request: request) { response in
+            if let json = response as? [String: Any], let searchResponse = SearchResponse(response: json) {
+                callback(searchResponse)
             }
-            
-            guard let mime = response?.mimeType, mime == "application/json" else {
-                return
-            }
-            
-            if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
-                if let searchResponse = SearchResponse(response: json) {
-                    callback(searchResponse)
-                }
-            }
-        }).resume()
+        }
     }
     
     func fetchUserDetails(detailsUrl: String, _ callback: @escaping (_ response: UserDetails) -> Void) {
         let url = URL(string: detailsUrl)!
         let request = ServiceHelper.getUrlRequest(url)
         
-        session.dataTask(with: request, completionHandler: {data, response, error in
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                // TODO: handle error
-                print((response as! HTTPURLResponse).statusCode)
-                return
-            }
-            
-            guard let mime = response?.mimeType, mime == "application/json" else {
-                return
-            }
-            
-            if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+        ServiceHelper.performGetRequest(request: request) { response in
+            if let json = response as? [String: Any] {
                 callback(UserDetails(json))
             }
-        }).resume()
+        }
     }
 }
 

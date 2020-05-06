@@ -9,6 +9,8 @@
 import Foundation
 
 class ServiceHelper {
+    private static let session = URLSession.shared
+    
     static func getUrlRequest(_ url: URL) -> URLRequest {
         let loginData = String(format: "%@:%@", K.Search.username, ProcessInfo.processInfo.environment["access_token"]!)
         let base64LoginData = loginData.toBase64()
@@ -18,5 +20,23 @@ class ServiceHelper {
         request.setValue("Basic \(base64LoginData)", forHTTPHeaderField: "Authorization")
         
         return request
+    }
+    
+    static func performGetRequest(request: URLRequest, _ callback: @escaping (_ response: Any) -> Void) {
+        session.dataTask(with: request, completionHandler: {data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                // TODO: handle error
+                print((response as! HTTPURLResponse).statusCode)
+                return
+            }
+            
+            guard let mime = response?.mimeType, mime == "application/json" else {
+                return
+            }
+            
+            if let json = try? JSONSerialization.jsonObject(with: data!, options: []) {
+                callback(json)
+            }
+        }).resume()
     }
 }

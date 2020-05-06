@@ -20,6 +20,7 @@ enum Language: String, CaseIterable {
     case python = "Python"
     case swift = "Swift"
     case javascript = "JavaScript"
+    case typescript = "TypeScript"
 }
 
 extension RepoDetails {
