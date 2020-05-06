@@ -152,12 +152,12 @@ class DetailsViewController: UIViewController {
         pieChartData.setValueFormatter(formatter)
         pieChartData.setDrawValues(false)
         
-        chartView.legend.enabled = true
-        let marker:BalloonMarker = BalloonMarker(color: UIColor(red: 93/255, green: 186/255, blue: 215/255, alpha: 1), font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 25.0, right: 7.0))
+        chartView.legend.enabled = false
+        let marker:BalloonMarker = BalloonMarker(color: UIColor.systemBlue, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 25.0, right: 7.0))
         marker.minimumSize = CGSize(width: 75.0, height: 35.0)
         chartView.marker = marker
         chartView.rotationEnabled = false
-        chartView.drawEntryLabelsEnabled = false
+        chartView.drawEntryLabelsEnabled = chartView != commitsRepoChartView
         chartView.holeColor = nil
         chartView.drawHoleEnabled = true
         

@@ -186,7 +186,10 @@ open class BalloonMarker: MarkerImage
     
     open override func refreshContent(entry: ChartDataEntry, highlight: Highlight)
     {
-        setLabel(String(entry.y))
+        if let label = (entry as? PieChartDataEntry)?.label {
+//            setLabel(String(entry.y))
+            setLabel(String(format: K.Details.chartLabelFormat, label, String(entry.y)))
+        }
     }
     
     @objc open func setLabel(_ newLabel: String)

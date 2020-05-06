@@ -17,5 +17,6 @@ struct K {
     }
     struct Details {
         static let contributionsUrl = "https://api.github.com/repos/%@/%@/contributors"
+        static let chartLabelFormat = "%@: %@"
     }
 }
