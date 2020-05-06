@@ -87,10 +87,32 @@ class DetailsViewController: UIViewController {
         let vals = Array(commitsPerRepo.values).map { Double($0) }
         let labels = Array(commitsPerRepo.keys)
         generateChartView(chartView: commitsRepoChartView, dataPoints: labels, values: vals)
+        generateCommitsPerLanguageChart(commitsPerRepo)
     }
     
-    private func generateCommitsPerLanguageChart() {
+    private func generateCommitsPerLanguageChart(_ commitsPerRepo: [String: Int]) {
+        var commitsPerLanguage = [Language: Int]()
+        var repoLanguages = [String: Language]()
         
+        for repo in repos {
+            if let lang = repo.0.language {
+                repoLanguages[repo.0.name] = lang
+            }
+        }
+        
+        for (repoName, commitCount) in commitsPerRepo {
+            if let lang = repoLanguages[repoName] {
+                if commitsPerLanguage[lang] == nil {
+                    commitsPerLanguage[lang] = commitCount
+                } else {
+                    commitsPerLanguage[lang]! += commitCount
+                }
+            }
+        }
+        
+        let vals = Array(commitsPerLanguage.values).map { Double($0) }
+        let labels = Array(commitsPerLanguage.keys).map { $0.rawValue }
+        generateChartView(chartView: commitLanguageChartView, dataPoints: labels, values: vals)
     }
     
     private func generateRepoLanguageChart() {

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		83BF760C55255E2F0CA01959 /* Pods_GithubProfileAnalyzer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E37CE325E13C3249BBB324 /* Pods_GithubProfileAnalyzer.framework */; };
 		AA2D37E8245D176A0009FC45 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2D37E7245D176A0009FC45 /* DetailsViewController.swift */; };
 		AA2D37EE245DD6120009FC45 /* RepoDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2D37ED245DD6120009FC45 /* RepoDetails.swift */; };
 		AA2D37F1245DD8220009FC45 /* DetailsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2D37F0245DD8220009FC45 /* DetailsService.swift */; };
@@ -16,6 +15,7 @@
 		AA31191C245691FA0056E179 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA31191B245691FA0056E179 /* SearchTableViewCell.swift */; };
 		AA3119202456A1750056E179 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA31191F2456A1750056E179 /* Constants.swift */; };
 		AA87B51F245FD171003B4900 /* BalloonMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA87B51E245FD171003B4900 /* BalloonMarker.swift */; };
+		AA87B52424625E6D003B4900 /* Pods_GithubProfileAnalyzer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E37CE325E13C3249BBB324 /* Pods_GithubProfileAnalyzer.framework */; };
 		AA91891C2456349300D0BACB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91891B2456349300D0BACB /* AppDelegate.swift */; };
 		AA91891E2456349300D0BACB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91891D2456349300D0BACB /* SceneDelegate.swift */; };
 		AA9189202456349300D0BACB /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA91891F2456349300D0BACB /* SearchViewController.swift */; };
@@ -38,6 +38,7 @@
 		AA31191B245691FA0056E179 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		AA31191F2456A1750056E179 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		AA87B51E245FD171003B4900 /* BalloonMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalloonMarker.swift; sourceTree = "<group>"; };
+		AA87B52024625E27003B4900 /* Charts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Charts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA9189182456349300D0BACB /* GithubProfileAnalyzer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubProfileAnalyzer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA91891B2456349300D0BACB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA91891D2456349300D0BACB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -57,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83BF760C55255E2F0CA01959 /* Pods_GithubProfileAnalyzer.framework in Frameworks */,
+				AA87B52424625E6D003B4900 /* Pods_GithubProfileAnalyzer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +77,7 @@
 		58F443C456566726059C7A7C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA87B52024625E27003B4900 /* Charts.framework */,
 				19E37CE325E13C3249BBB324 /* Pods_GithubProfileAnalyzer.framework */,
 			);
 			name = Frameworks;
