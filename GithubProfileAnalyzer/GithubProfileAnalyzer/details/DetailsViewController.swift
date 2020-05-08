@@ -143,7 +143,7 @@ class DetailsViewController: UIViewController {
         }
         
         let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
-        pieChartDataSet.colors = colorsOfCharts(numbersOfColor: dataPoints.count)
+        pieChartDataSet.colors = chartView == commitsRepoChartView ? colorsOfCharts(numbersOfColor: dataPoints.count) : getLanguageColors(labels: dataPoints)
         
         let pieChartData = PieChartData(dataSet: pieChartDataSet)
         let format = NumberFormatter()
@@ -152,7 +152,7 @@ class DetailsViewController: UIViewController {
         pieChartData.setValueFormatter(formatter)
         pieChartData.setDrawValues(false)
         
-        chartView.legend.enabled = false
+        chartView.legend.enabled = chartView == commitsRepoChartView
         let marker:BalloonMarker = BalloonMarker(color: UIColor.systemBlue, font: UIFont(name: "Helvetica", size: 12)!, textColor: UIColor.white, insets: UIEdgeInsets(top: 7.0, left: 7.0, bottom: 25.0, right: 7.0))
         marker.minimumSize = CGSize(width: 75.0, height: 35.0)
         chartView.marker = marker
@@ -175,5 +175,49 @@ class DetailsViewController: UIViewController {
         colors.append(color)
       }
       return colors
+    }
+    
+    private func getLanguageColors(labels: [String]) -> [UIColor] {
+        var colors = [UIColor]()
+        for label in labels {
+            switch label {
+            case Language.java.rawValue:
+                colors.append(hexStringToUIColor(hex: "#b07219"))
+            case Language.python.rawValue:
+                colors.append(hexStringToUIColor(hex: "#3572A5"))
+            case Language.swift.rawValue:
+                colors.append(hexStringToUIColor(hex: "#ffac45"))
+            case Language.javascript.rawValue:
+                colors.append(hexStringToUIColor(hex: "#f1e05a"))
+            case Language.typescript.rawValue:
+                colors.append(hexStringToUIColor(hex: "#2b7489"))
+            default:
+                colors.append(UIColor.black)
+            }
+        }
+        
+        return colors
+    }
+    
+    func hexStringToUIColor (hex:String) -> UIColor {
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+
+        if ((cString.count) != 6) {
+            return UIColor.gray
+        }
+
+        var rgbValue:UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
     }
 }

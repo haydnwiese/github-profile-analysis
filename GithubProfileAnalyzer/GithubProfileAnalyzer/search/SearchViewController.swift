@@ -12,7 +12,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     var combinedResults = [(SearchResult, UserDetails?)]()
-    let MAX_RESULTS: Int = 10
+    let MAX_RESULTS: Int = 20
     var indicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
