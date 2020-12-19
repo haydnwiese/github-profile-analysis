@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     var combinedResults = [(SearchResult, UserDetails?)]()
@@ -52,8 +52,31 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    // MARK: Private Methods
-    private func fetchUsers(username: String) {
+    // MARK: Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        guard let detailsViewController = segue.destination as? DetailsViewController else {
+            fatalError("Unexpected destination")
+        }
+        
+        guard let selectedSearchCell = sender as? SearchTableViewCell else {
+            fatalError("Unexpected sender")
+        }
+        
+        guard let indexPath = tableView.indexPathForSelectedRow else {
+            fatalError()
+        }
+        
+        let selectedResult = combinedResults[indexPath.row]
+        detailsViewController.userDetails = selectedResult as? (SearchResult, UserDetails)
+        detailsViewController.profilePicture = selectedSearchCell.profilePictureImageView.image
+    }
+}
+
+// MARK: Private Methods
+private extension SearchViewController {
+    func fetchUsers(username: String) {
         indicator.startAnimating()
         
         let searchService = SearchService()
@@ -67,7 +90,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    private func fetchUserDetails(index: Int = 0,_ searchService: SearchService) {
+    func fetchUserDetails(index: Int = 0,_ searchService: SearchService) {
         if index >= combinedResults.count {
             DispatchQueue.main.async {
                 // Stop activity indicator
@@ -85,14 +108,16 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    private func setupActivityIndicator() {
+    func setupActivityIndicator() {
         indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         indicator.style = .medium
         indicator.center = view.center
         view.addSubview(indicator)
     }
-    
-    // MARK: UITableViewDelegate Methods
+}
+
+// MARK: UITableViewDelegate
+extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return combinedResults.count
     }
@@ -118,8 +143,10 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return K.Search.tableViewRowHeight
     }
-    
-    // MARK: UISearchBarDelegate Methods
+}
+
+// MARK: UISearchBarDelegate
+extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Hide the keyboard
         searchBar.resignFirstResponder()
@@ -132,27 +159,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
             fetchUsers(username: searchTerm)
         }
-    }
-    
-    // MARK: Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        guard let detailsViewController = segue.destination as? DetailsViewController else {
-            fatalError("Unexpected destination")
-        }
-        
-        guard let selectedSearchCell = sender as? SearchTableViewCell else {
-            fatalError("Unexpected sender")
-        }
-        
-        guard let indexPath = tableView.indexPathForSelectedRow else {
-            fatalError()
-        }
-        
-        let selectedResult = combinedResults[indexPath.row]
-        detailsViewController.userDetails = selectedResult as? (SearchResult, UserDetails)
-        detailsViewController.profilePicture = selectedSearchCell.profilePictureImageView.image
     }
 }
 
